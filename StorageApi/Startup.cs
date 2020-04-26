@@ -90,7 +90,11 @@ namespace StorageApi
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<StorageDbContext>();
-                context.Database.Migrate();
+                try
+                {
+                    context.Database.Migrate();
+                }
+                catch{}
             }
 
         }

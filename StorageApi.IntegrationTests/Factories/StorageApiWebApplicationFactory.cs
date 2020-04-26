@@ -13,7 +13,7 @@ namespace StorageApi.IntegrationTests.Factories
 {
     public class StorageApiWebApplicationFactory<T> : WebApplicationFactory<T> where T : class
     {
-        private static object _locker = new object();
+        public static object _locker = new object();
         
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -41,7 +41,7 @@ namespace StorageApi.IntegrationTests.Factories
                         var scopedServices = scope.ServiceProvider;
                         var appDb = scopedServices.GetRequiredService<StorageDbContext>();
                         var logger = scopedServices.GetRequiredService<ILogger<StorageApiWebApplicationFactory<Startup>>>();
-                        appDb.Database.EnsureDeleted();
+                        // appDb.Database.EnsureDeleted();
                         appDb.Database.EnsureCreated();
                     }
                 }

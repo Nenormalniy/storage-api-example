@@ -79,23 +79,25 @@ namespace StorageApi.Models
         public async Task AddQuantity(int storeIdParam, int articleIdParam, int quantityToAddParam)
         {
             using var ctx = new StorageDbContext();
-            var updateQuery = $@"
+            await ctx.Database.ExecuteSqlInterpolatedAsync(
+                $@"
 insert into ""StorageArticles"" (""StoreId"", ""ArticleId"", ""Quantity"")
 values ({storeIdParam}, {articleIdParam}, {quantityToAddParam})
 on conflict (""StoreId"", ""ArticleId"") do update set ""Quantity"" = (""StorageArticles"".""Quantity"" + {quantityToAddParam});
-";
-            await ctx.Database.ExecuteSqlRawAsync(updateQuery);
+"
+                );
         }
         
         public async Task SetQuantity(int storeIdParam, int articleIdParam, int quantityToSetParam)
         {
             using var ctx = new StorageDbContext();
-            var updateQuery = $@"
+            await ctx.Database.ExecuteSqlInterpolatedAsync(
+                $@"
 insert into ""StorageArticles"" (""StoreId"", ""ArticleId"", ""Quantity"")
 values ({storeIdParam}, {articleIdParam}, {quantityToSetParam})
 on conflict (""StoreId"", ""ArticleId"") do update set ""Quantity"" = {quantityToSetParam};
-";
-            await ctx.Database.ExecuteSqlRawAsync(updateQuery);
+"                
+                );
         }
     }
 }
